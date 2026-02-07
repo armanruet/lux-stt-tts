@@ -4,7 +4,7 @@ A beautiful, modern web app for practicing **Luxembourgish pronunciation** using
 
 ![Luxembourgish Practice App](https://img.shields.io/badge/Language-L%C3%ABtzebuergesch-red?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
-![GitHub Pages](https://img.shields.io/badge/Deployed-GitHub%20Pages-brightgreen?style=for-the-badge)
+![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge)
 
 ## ✨ Features
 
@@ -28,7 +28,10 @@ A beautiful, modern web app for practicing **Luxembourgish pronunciation** using
 
 ## 🚀 Quick Start
 
-### Option 1: Run Locally (Recommended)
+### Option 1: Use Online
+Visit the live app deployed on Vercel *(URL will be available after deployment)*
+
+### Option 2: Run Locally
 
 1. **Clone the repository**
    ```bash
@@ -51,21 +54,15 @@ A beautiful, modern web app for practicing **Luxembourgish pronunciation** using
    http://localhost:3456
    ```
 
-The local server includes a CORS proxy that enables full TTS and STT functionality.
+## 🚀 Deploy to Vercel
 
-### Option 2: Use Online (Requires CORS Proxy)
+1. **Fork or clone this repository**
+2. **Go to [vercel.com](https://vercel.com)** and sign in with GitHub
+3. **Click "New Project"** and import your repository
+4. **Click "Deploy"** - Vercel auto-detects the configuration
+5. Your app will be live at `https://your-project.vercel.app`
 
-The live app at [armanruet.github.io/lux-stt-tts](https://armanruet.github.io/lux-stt-tts) requires a CORS proxy to work.
-
-**To enable the live site:**
-
-1. Go to [workers.cloudflare.com](https://workers.cloudflare.com/) and create a free account
-2. Create a new Worker and paste the contents of `cloudflare-worker.js`
-3. Deploy and copy your worker URL (e.g., `https://lux-stt-tts-proxy.your-name.workers.dev`)
-4. Update `CORS_PROXY_URL` in `api-service.js` with your worker URL
-5. Push the changes to GitHub
-
-> ⚠️ **Why?** The Sproochmaschinn API doesn't allow cross-origin requests from browser domains like `github.io`. The Cloudflare Worker acts as a proxy to bypass this restriction.
+The app includes serverless API functions that handle the CORS proxy for the Sproochmaschinn API.
 
 ## 🛠️ Technology Stack
 
@@ -75,23 +72,22 @@ The live app at [armanruet.github.io/lux-stt-tts](https://armanruet.github.io/lu
 | **CSS3** | Styling with CSS variables, glassmorphism |
 | **Vanilla JS** | No framework dependencies |
 | **Sproochmaschinn API** | TTS & STT services |
-| **GitHub Actions** | CI/CD deployment |
-| **GitHub Pages** | Static hosting |
+| **Vercel** | Hosting & serverless functions |
 
 ## 📁 Project Structure
 
 ```
 lux-stt-tts/
-├── index.html        # Main HTML file
-├── styles.css        # All styles (responsive included)
-├── app.js            # Main application logic
-├── api-service.js    # Sproochmaschinn API client
-├── audio-handler.js  # Audio recording utilities
-├── server.js         # Local CORS proxy (dev only)
-├── package.json      # Dependencies
-└── .github/
-    └── workflows/
-        └── deploy.yml  # GitHub Pages deployment
+├── index.html          # Main HTML file
+├── styles.css          # All styles (responsive included)
+├── app.js              # Main application logic
+├── api-service.js      # Sproochmaschinn API client
+├── audio-handler.js    # Audio recording utilities
+├── server.js           # Local CORS proxy (dev only)
+├── vercel.json         # Vercel configuration
+├── api/
+│   └── proxy.js        # Serverless CORS proxy function
+└── package.json        # Dependencies
 ```
 
 ## 🎯 Usage Tips
@@ -99,7 +95,7 @@ lux-stt-tts/
 ### Text-to-Speech
 1. Select a voice (Claude, Max, or Maxine)
 2. Type or paste Luxembourgish text
-3. Click "Lauschteren" (Listen)
+3. Click "Schwätzen!" (Speak)
 4. Use the audio player to play/download
 
 ### Speech-to-Text
@@ -125,13 +121,6 @@ This app uses the [Sproochmaschinn API](https://sproochmaschinn.lu):
 | `/api/tts/{session_id}` | POST | Text-to-Speech |
 | `/api/stt/{session_id}` | POST | Speech-to-Text |
 | `/api/result/{request_id}` | GET | Get results |
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest features
-- Submit pull requests
 
 ## 📄 License
 
