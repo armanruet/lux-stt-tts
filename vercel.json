@@ -1,56 +1,27 @@
 {
-    "version": 2,
-    "builds": [
+  "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "/api/proxy.js"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
         {
-            "src": "api/**/*.js",
-            "use": "@vercel/node"
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         },
         {
-            "src": "*.html",
-            "use": "@vercel/static"
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
         },
         {
-            "src": "*.css",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "*.js",
-            "use": "@vercel/static",
-            "config": {
-                "excludeFiles": [
-                    "api/**",
-                    "server.js"
-                ]
-            }
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Session-ID"
         }
-    ],
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "/api/proxy.js"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/$1"
-        }
-    ],
-    "headers": [
-        {
-            "source": "/api/(.*)",
-            "headers": [
-                {
-                    "key": "Access-Control-Allow-Origin",
-                    "value": "*"
-                },
-                {
-                    "key": "Access-Control-Allow-Methods",
-                    "value": "GET, POST, PUT, DELETE, OPTIONS"
-                },
-                {
-                    "key": "Access-Control-Allow-Headers",
-                    "value": "Content-Type, Session-ID"
-                }
-            ]
-        }
-    ]
+      ]
+    }
+  ]
 }
