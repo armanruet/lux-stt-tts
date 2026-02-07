@@ -6,13 +6,17 @@
 
 class SproochmaschinnAPI {
     constructor() {
-        // Detect environment: use proxy on localhost, direct API on production
+        // Detect environment: use local proxy on localhost, Cloudflare Worker proxy on production
         const isLocalhost = window.location.hostname === 'localhost' ||
             window.location.hostname === '127.0.0.1';
 
-        // In production (GitHub Pages), use direct API URL
-        // Locally, use proxy to avoid CORS
-        this.baseUrl = isLocalhost ? '' : 'https://sproochmaschinn.lu';
+        // CORS Proxy Configuration:
+        // In production (GitHub Pages), use Cloudflare Workers proxy to bypass CORS
+        // Deploy cloudflare-worker.js and update this URL with your worker URL
+        const CORS_PROXY_URL = 'https://lux-stt-tts-proxy.armanruet.workers.dev';
+
+        // Locally use the Node.js proxy, in production use Cloudflare Workers
+        this.baseUrl = isLocalhost ? '' : CORS_PROXY_URL;
         this.isProduction = !isLocalhost;
 
         this.sessionId = null;
@@ -21,7 +25,7 @@ class SproochmaschinnAPI {
         this.onSessionChange = null;
         this.onWebSocketMessage = null;
 
-        console.log(`API Mode: ${isLocalhost ? 'Development (proxy)' : 'Production (direct)'}`);
+        console.log(`API Mode: ${isLocalhost ? 'Development (local proxy)' : 'Production (Cloudflare proxy)'}`);
     }
 
     async init(onSessionChange) {

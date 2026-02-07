@@ -28,12 +28,7 @@ A beautiful, modern web app for practicing **Luxembourgish pronunciation** using
 
 ## 🚀 Quick Start
 
-### Option 1: Use Online
-Visit the live app: **[armanruet.github.io/lux-stt-tts](https://armanruet.github.io/lux-stt-tts)**
-
-> ⚠️ **Note**: The online version connects directly to Sproochmaschinn API. If you encounter CORS issues, use the local development setup.
-
-### Option 2: Run Locally
+### Option 1: Run Locally (Recommended)
 
 1. **Clone the repository**
    ```bash
@@ -57,6 +52,20 @@ Visit the live app: **[armanruet.github.io/lux-stt-tts](https://armanruet.github
    ```
 
 The local server includes a CORS proxy that enables full TTS and STT functionality.
+
+### Option 2: Use Online (Requires CORS Proxy)
+
+The live app at [armanruet.github.io/lux-stt-tts](https://armanruet.github.io/lux-stt-tts) requires a CORS proxy to work.
+
+**To enable the live site:**
+
+1. Go to [workers.cloudflare.com](https://workers.cloudflare.com/) and create a free account
+2. Create a new Worker and paste the contents of `cloudflare-worker.js`
+3. Deploy and copy your worker URL (e.g., `https://lux-stt-tts-proxy.your-name.workers.dev`)
+4. Update `CORS_PROXY_URL` in `api-service.js` with your worker URL
+5. Push the changes to GitHub
+
+> ⚠️ **Why?** The Sproochmaschinn API doesn't allow cross-origin requests from browser domains like `github.io`. The Cloudflare Worker acts as a proxy to bypass this restriction.
 
 ## 🛠️ Technology Stack
 
