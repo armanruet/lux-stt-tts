@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="lb">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Lëtzebuergesch Practice | TTS & STT</title>
+    <meta name="description" content="Practice Luxembourgish pronunciation with Text-to-Speech and Speech-to-Text">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Animated Background -->
+        <div class="bg-gradient"></div>
+        <div class="bg-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-flag">🇱🇺</span>
+                <h1>Lëtzebuergesch Practice</h1>
+            </div>
+            <div class="session-status" id="sessionStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tab Navigation -->
+            <nav class="tab-nav">
+                <button class="tab-btn active" data-tab="tts" id="ttsTab">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    </svg>
+                    <span>Lauschteren</span>
+                    <small>Listen</small>
+                </button>
+                <button class="tab-btn" data-tab="stt" id="sttTab">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" y1="19" x2="12" y2="23" />
+                        <line x1="8" y1="23" x2="16" y2="23" />
+                    </svg>
+                    <span>Schwätzen</span>
+                    <small>Speak</small>
+                </button>
+            </nav>
+
+            <!-- TTS Panel -->
+            <section class="panel tts-panel active" id="ttsPanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Text-to-Speech</h2>
+                        <p>Type Luxembourgish text and hear the pronunciation</p>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Text Input -->
+                        <div class="input-group">
+                            <label for="ttsInput">Your Text</label>
+                            <textarea id="ttsInput" class="text-input"
+                                placeholder="SchreiftÄren Text hei... (e.g., Moien, wéi geet et?)" rows="4"></textarea>
+                            <div class="input-footer">
+                                <span class="char-count"><span id="charCount">0</span> characters</span>
+                            </div>
+                        </div>
+
+                        <!-- Voice Selection -->
+                        <div class="voice-selection">
+                            <label>Select Voice</label>
+                            <div class="voice-options">
+                                <button class="voice-btn active" data-voice="claude">
+                                    <span class="voice-avatar">👨‍💼</span>
+                                    <span class="voice-name">Claude</span>
+                                    <span class="voice-type">Male</span>
+                                </button>
+                                <button class="voice-btn" data-voice="max">
+                                    <span class="voice-avatar">👨</span>
+                                    <span class="voice-name">Max</span>
+                                    <span class="voice-type">Male</span>
+                                </button>
+                                <button class="voice-btn" data-voice="maxine">
+                                    <span class="voice-avatar">👩</span>
+                                    <span class="voice-name">Maxine</span>
+                                    <span class="voice-type">Female</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Speak Button -->
+                        <button class="primary-btn speak-btn" id="speakBtn" disabled>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                            <span>Schwätzen!</span>
+                        </button>
+
+                        <!-- Audio Player -->
+                        <div class="audio-player hidden" id="audioPlayer">
+                            <div class="player-controls">
+                                <button class="player-btn" id="playPauseBtn">
+                                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                    <svg class="pause-icon hidden" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M6 4h4v16H6zM14 4h4v16h-4z" />
+                                    </svg>
+                                </button>
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="progressBar">
+                                        <div class="progress-fill" id="progressFill"></div>
+                                    </div>
+                                    <div class="time-display">
+                                        <span id="currentTime">0:00</span>
+                                        <span>/</span>
+                                        <span id="duration">0:00</span>
+                                    </div>
+                                </div>
+                                <button class="player-btn" id="downloadBtn" title="Download audio">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="7,10 12,15 17,10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <audio id="audioElement"></audio>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="loading-state hidden" id="ttsLoading">
+                            <div class="spinner"></div>
+                            <span>Generating speech...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example Phrases -->
+                <div class="quick-phrases">
+                    <h3>Quick Practice Phrases</h3>
+                    <div class="phrase-grid">
+                        <button class="phrase-btn" data-phrase="Moien, wéi geet et?">Moien, wéi geet et?</button>
+                        <button class="phrase-btn" data-phrase="Ech schwätzen e bësse Lëtzebuergesch.">Ech schwätzen e
+                            bësse Lëtzebuergesch.</button>
+                        <button class="phrase-btn" data-phrase="Wou ass déi nächst Busarrêt?">Wou ass déi nächst
+                            Busarrêt?</button>
+                        <button class="phrase-btn" data-phrase="Merci villmools!">Merci villmools!</button>
+                        <button class="phrase-btn" data-phrase="Äddi, bis geschwënn!">Äddi, bis geschwënn!</button>
+                        <button class="phrase-btn" data-phrase="Ech verstinn dat net.">Ech verstinn dat net.</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STT Panel -->
+            <section class="panel stt-panel" id="sttPanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Speech-to-Text</h2>
+                        <p>Speak Luxembourgish and see your words transcribed</p>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Recording Area -->
+                        <div class="recording-area">
+                            <button class="record-btn" id="recordBtn">
+                                <div class="record-circle">
+                                    <svg class="mic-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" fill="none" stroke="currentColor"
+                                            stroke-width="2" />
+                                        <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" stroke-width="2" />
+                                        <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                    <svg class="stop-icon hidden" viewBox="0 0 24 24" fill="currentColor">
+                                        <rect x="6" y="6" width="12" height="12" rx="2" />
+                                    </svg>
+                                </div>
+                                <div class="pulse-rings">
+                                    <div class="ring ring-1"></div>
+                                    <div class="ring ring-2"></div>
+                                    <div class="ring ring-3"></div>
+                                </div>
+                            </button>
+                            <p class="record-hint" id="recordHint">Click to start recording</p>
+                            <div class="recording-timer hidden" id="recordingTimer">
+                                <span class="timer-dot"></span>
+                                <span id="timerDisplay">00:00</span>
+                            </div>
+                        </div>
+
+                        <!-- Settings -->
+                        <div class="stt-settings">
+                            <label class="toggle-setting">
+                                <input type="checkbox" id="speakerDetection">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Speaker Detection</span>
+                            </label>
+                        </div>
+
+                        <!-- Audio Preview -->
+                        <div class="audio-preview hidden" id="audioPreview">
+                            <div class="preview-header">
+                                <h3>🎧 Your Recording</h3>
+                            </div>
+                            <div class="audio-player">
+                                <div class="player-controls">
+                                    <button class="player-btn" id="previewPlayBtn">
+                                        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                        <svg class="pause-icon hidden" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M6 4h4v16H6zM14 4h4v16h-4z" />
+                                        </svg>
+                                    </button>
+                                    <div class="progress-container">
+                                        <div class="progress-bar" id="previewProgressBar">
+                                            <div class="progress-fill" id="previewProgressFill"></div>
+                                        </div>
+                                        <div class="time-display">
+                                            <span id="previewCurrentTime">0:00</span>
+                                            <span>/</span>
+                                            <span id="previewDuration">0:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <audio id="previewAudioElement"></audio>
+                            </div>
+                        </div>
+
+                        <!-- Transcription Output -->
+                        <div class="transcription-output hidden" id="transcriptionOutput">
+                            <div class="output-header">
+                                <h3>📝 Transcription</h3>
+                                <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="transcription-text" id="transcriptionText"></div>
+                            <div class="transcription-meta" id="transcriptionMeta"></div>
+                        </div>
+
+                        <!-- STT Loading -->
+                        <div class="loading-state hidden" id="sttLoading">
+                            <div class="spinner"></div>
+                            <span>Processing audio...</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar-small">
+                                    <div class="progress-fill-small" id="sttProgressFill"></div>
+                                </div>
+                                <span id="sttProgressText">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="tips-card">
+                    <h3>💡 Tips for Better Results</h3>
+                    <ul>
+                        <li>Speak clearly and at a normal pace</li>
+                        <li>Minimize background noise</li>
+                        <li>Hold your device about 15cm from your mouth</li>
+                        <li>Try to pronounce Luxembourgish vowels correctly</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by <a href="https://sproochmaschinn.lu" target="_blank" rel="noopener">Sproochmaschinn.lu</a></p>
+            <p class="footer-sub">Zenter fir d'Lëtzebuerger Sprooch</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="api-service.js"></script>
+    <script src="audio-handler.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
